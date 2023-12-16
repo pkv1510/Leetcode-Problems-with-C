@@ -123,10 +123,23 @@ struct ListNode* addTwoNumbers1(struct ListNode* l1, struct ListNode* l2) {
 
 int main()
 {
-    struct ListNode l4 = {3, NULL}, l6 = {6, NULL};
-    struct ListNode l3 = {2, &l4}, l5 = {5, &l6};
-    struct ListNode l1 = {1, &l3}, l2 = {4, &l5}, *ptr = NULL;
-   
+    struct ListNode l1, l2, *ptr = NULL;
+    l1.val = 1;
+    l1.next = NULL;
+    /*
+    l1.next->val = 2;
+    l1.next->next = l1.next->next;
+    l1.next->next->val = 3;
+    l1.next->next->next = NULL;
+    */
+    l2.val = 9;
+    l2.next = NULL;
+    /*
+    l2.next->val = 5;
+    l2.next->next = l2.next->next;
+    l2.next->next->val = 6;
+    l2.next->next->next = NULL;
+    */
     ptr = addTwoNumbers1(&l1, &l2);
     printList(ptr);
 
