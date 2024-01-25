@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-int climbStairs(int n) {
+int climbStairs1(int n) {
     int prev = 1;
     int curr = 2;
     int ways = 0;
@@ -21,6 +21,18 @@ int climbStairs(int n) {
 
     return ways;
 }
+
+int climbStairs(int n)
+{
+    if(n < 0)
+        return 0;
+    
+    if(n == 0)
+        return 1;
+
+    return climbStairs(n - 1) + climbStairs(n - 2);
+}
+
 int main()
 {
     int num;
