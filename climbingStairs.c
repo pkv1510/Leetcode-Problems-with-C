@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 
 int climbStairs1(int n) {
     int prev = 1;
