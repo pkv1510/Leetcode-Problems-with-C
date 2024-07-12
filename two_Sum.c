@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include "uthash.h"
 
 void printArray(int *arr, int size) {
     for(int i = 0;i < size;i++) {
@@ -49,7 +50,7 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize){
 }
 */
 
-int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
+int* twoSum1(int* nums, int numsSize, int target, int* returnSize) {
     int *ret = (int*)malloc(2 * sizeof(int));
 
     for(int i = 0;i < numsSize;i++) {
@@ -66,6 +67,84 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
 
     return NULL;
 }
+/*
+* For this method one extra file will be required
+ struct hashTable {
+        int key; 
+        int value; 
+        UT_hash_handle hh;
+} *hashTable = NULL, *item;
+
+int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
+
+    for (int i = 0; i < numsSize; i++) {
+        int complement = target - nums[i];
+        HASH_FIND_INT(hashTable, &complement, item);
+        if (item) {
+            int* result = malloc(sizeof(int) * 2);
+            result[0] = item->value;
+            result[1] = i;
+            *returnSize = 2;
+            HASH_CLEAR(hh, hashTable);
+            return result;
+        }
+        item = malloc(sizeof(struct hashTable));
+        item->key = nums[i];
+        item->value = i;
+        HASH_ADD_INT(hashTable, key, item);
+    }
+
+    *returnSize = 0;
+    HASH_CLEAR(hh, hashTable);
+    return NULL;
+}
+*/
+
+struct ht{
+    int index;
+    int value;
+};
+
+struct ht htable[5];
+
+void init_hash_table() {
+    for(int i = 0;i < 5;i++) {
+        htable[i].value = -1;
+        htable[i].index = i;
+    }
+}
+
+void update_hash_table(int *nums, int size) {
+    for(int i = 0;i < size;i++) {
+        htable[nums[i]].value = i;
+    }
+}
+
+int lookup_hash_table(int val) {
+    return (htable[val].value != -1) ? htable[val].value : 0;
+}
+
+void print_hash_table() {
+    for(int i = 0;i < 5;i++) {
+        printf("\t%d\t%d\n", htable[i].index, htable[i].value);
+    }
+}
+
+int *twoSum(int *nums, int numsSize, int target, int *returnSize) {
+    for (int i = 0; i < numsSize; i++) {
+        int complement = target - nums[i];
+        int index = lookup_hash_table(complement);
+        if(index) {
+            int* ret = malloc(sizeof(int) * 2);
+            ret[0] = i;
+            ret[1] = index;
+            *returnSize = 2;
+            return ret;
+        }
+    }
+    *returnSize = 0;
+    return NULL;
+}
 
 int main() {
     //int arr[] = {2, 7, 11, 15};
@@ -73,13 +152,15 @@ int main() {
     int size = sizeof(arr)/sizeof(int);
     int target, *targetArray, targetArraySize;
 
+    init_hash_table();
+    update_hash_table(arr, size);
+    print_hash_table();
+
     printf("Enter the target value \n");
     scanf("%d", &target);
 
     targetArray = twoSum(arr, size, target, &targetArraySize);
     printArray(targetArray, targetArraySize);
-
-    free(targetArray);
 
     return 0;
 }
